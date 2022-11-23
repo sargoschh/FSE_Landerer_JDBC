@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="625a1ee7-07ae-4c4b-8ac9-a2a33aa71546" name="Changes" comment="Demo-Projekt Verbindung DB hergestellt">
+    <list default="true" id="625a1ee7-07ae-4c4b-8ac9-a2a33aa71546" name="Changes" comment="Demo-Projekt Select &amp; Insert verarbeitet">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/at/itkolleg/JDBCDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/at/itkolleg/JDBCDemo.java" afterDir="false" />
     </list>
@@ -67,7 +67,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1669190654650</updated>
-      <workItem from="1669190656139" duration="4683000" />
+      <workItem from="1669190656139" duration="5752000" />
     </task>
     <task id="LOCAL-00001" summary="Demo-Projekt erstellt">
       <created>1669190684421</created>
@@ -97,7 +97,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669193612580</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Demo-Projekt Select &amp; Insert verarbeitet">
+      <created>1669195964799</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1669195964799</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -118,6 +125,7 @@
     <MESSAGE value="Demo-Projekt erstellt" />
     <MESSAGE value="Demo-Projekt eingerichtet" />
     <MESSAGE value="Demo-Projekt Verbindung DB hergestellt" />
-    <option name="LAST_COMMIT_MESSAGE" value="Demo-Projekt Verbindung DB hergestellt" />
+    <MESSAGE value="Demo-Projekt Select &amp; Insert verarbeitet" />
+    <option name="LAST_COMMIT_MESSAGE" value="Demo-Projekt Select &amp; Insert verarbeitet" />
   </component>
 </project>
