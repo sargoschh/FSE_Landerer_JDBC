@@ -8,16 +8,50 @@ public class JDBCDemo {
         System.out.println();
         selectAllDemo();
         System.out.println();
-        //insertStudentDemo();
-        //System.out.println();
-        //selectAllDemo();
-        updateStudentDemo();
+        insertStudentDemo("Günter Gosch", "guegosch@myimst.at");
+        System.out.println();
+        selectAllDemo();
+        System.out.println();
+        updateStudentDemo(9, "Daniela Gosch", "dangosch@myimst.at");
+        System.out.println();
+        selectAllDemo();
+        System.out.println();
+        deleteStudentDemo(10);
         System.out.println();
         selectAllDemo();
 
     }
 
-    public static void updateStudentDemo() {
+    public static void findAllByName(String name) {
+
+    }
+
+    public static void deleteStudentDemo(int studentId) {
+        System.out.println("Delete Demo mit JDBC");
+        String connectionUrl = "jdbc:mysql://localhost:3306/jdbcdemo";
+        String user = "root";
+        String pwd = "";
+
+        try (Connection con = DriverManager.getConnection(connectionUrl, user, pwd)){
+            System.out.println("Verbindung zur DB hergestellt!");
+
+            PreparedStatement preparedStatement = con.prepareStatement(
+                    "DELETE FROM `student` WHERE `student`.`id` = ?");
+
+            try {
+                preparedStatement.setInt(1, studentId);
+                int affectedRows = preparedStatement.executeUpdate();
+                System.out.println("Anzahl der gelöschten Datensätze: " + affectedRows);
+            }catch (SQLException ex) {
+                System.out.println("Fehler im SQL-Delete Statement: " + ex.getMessage());
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Fehler beim Aufbau der Verbindung zur DB: \n" + e.getMessage());
+        }
+    }
+
+    public static void updateStudentDemo(int studentId, String neuerName, String neueEmail) {
         System.out.println("Update Demo mit JDBC");
         String connectionUrl = "jdbc:mysql://localhost:3306/jdbcdemo";
         String user = "root";
@@ -27,11 +61,12 @@ public class JDBCDemo {
             System.out.println("Verbindung zur DB hergestellt!");
 
             PreparedStatement preparedStatement = con.prepareStatement(
-                    "UPDATE `student` SET `name` = ?, `email` = ? WHERE `student`.`id` = 5");
+                    "UPDATE `student` SET `name` = ?, `email` = ? WHERE `student`.`id` = ?");
             //reagiert auf Absetzen des Statements
             try {
-                preparedStatement.setString(1, "Jutta Hammerle");
-                preparedStatement.setString(2, "juthammerle@myimst.at");
+                preparedStatement.setString(1, neuerName);
+                preparedStatement.setString(2, neueEmail);
+                preparedStatement.setInt(3, studentId);
                 int affectedRows = preparedStatement.executeUpdate();
                 System.out.println("Anzahl der aktualisierten Datensätze: " + affectedRows);
             }catch (SQLException ex) {
@@ -43,7 +78,7 @@ public class JDBCDemo {
         }
     }
 
-    public static void insertStudentDemo() {
+    public static void insertStudentDemo(String name, String email) {
         System.out.println("Insert Demo mit JDBC");
         String connectionUrl = "jdbc:mysql://localhost:3306/jdbcdemo";
         String user = "root";
@@ -63,8 +98,8 @@ public class JDBCDemo {
                     "INSERT INTO `student` (`id`, `name`, `email`) VALUES (NULL, ?, ?)");
             //reagiert auf Absetzen des Statements
             try {
-                preparedStatement.setString(1, "Romana Gosch");
-                preparedStatement.setString(2, "romgosch@myimst.at");
+                preparedStatement.setString(1, name);
+                preparedStatement.setString(2, email);
                 int rowAffected = preparedStatement.executeUpdate();
                 System.out.println(rowAffected + " Datensätze eingefügt");
             }catch (SQLException ex) {
