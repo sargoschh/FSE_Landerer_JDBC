@@ -8,15 +8,20 @@ public class JDBCDemo {
         System.out.println();
         selectAllDemo();
         System.out.println();
-        //insertStudentDemo("Günter Gosch", "guegosch@myimst.at");
+        /*insertStudentDemo("Sarah Gosch", "sargosch@myimst.at");
+        insertStudentDemo("Romana Gosch", "romgosch@myimst.at");
+        insertStudentDemo("Daniela Hammerle", "danhammerle@myimst.at");
+        insertStudentDemo("Günter Gosch", "guegosch@myimst.at");
+        insertStudentDemo("Marcel Schranz", "marschranz@myimst.at");*/
+        insertStudentDemo("Patrick Bayr", "patbayr@myimst.at");
         System.out.println();
         selectAllDemo();
         System.out.println();
-        updateStudentDemo(9, "Daniela Gosch", "dangosch@myimst.at");
+        updateStudentDemo(3, "Daniela Gosch", "dangosch@myimst.at");
         System.out.println();
         selectAllDemo();
         System.out.println();
-        deleteStudentDemo(10);
+        deleteStudentDemo(7);
         System.out.println();
         selectAllDemo();
         findAllByNameLike("ma");
