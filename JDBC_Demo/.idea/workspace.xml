@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="625a1ee7-07ae-4c4b-8ac9-a2a33aa71546" name="Changes" comment="Doku 1.0">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/at/itkolleg/JDBCDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/at/itkolleg/JDBCDemo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,14 +34,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/SarahLine/OneDrive - HTL Imst/Programme/FSE_Repos/FSE_Landerer_JDBC/JDBC_Demo"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/sarah/OneDrive - HTL Imst/IT-Kolleg/Jahr2/FSE - Stolz/fse_stolz/_20221121_notify_hashfinder&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="JDBCDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="at.itkolleg.JDBCDemo" />
@@ -74,7 +72,9 @@
       <updated>1669190654650</updated>
       <workItem from="1669190656139" duration="8375000" />
       <workItem from="1669275128208" duration="2346000" />
-      <workItem from="1669665994888" duration="3396000" />
+      <workItem from="1669665994888" duration="3995000" />
+      <workItem from="1669724421086" duration="76000" />
+      <workItem from="1669795861112" duration="683000" />
     </task>
     <task id="LOCAL-00001" summary="Demo-Projekt erstellt">
       <created>1669190684421</created>
