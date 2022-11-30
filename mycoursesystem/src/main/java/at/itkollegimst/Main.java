@@ -1,6 +1,7 @@
 package at.itkollegimst;
 
 import dataaccess.MysqlDatabaseConnection;
+import ui.CLI;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -11,6 +12,9 @@ public class Main {
         String url = "jdbc:mysql://localhost:3306/kurssystem";
         String user = "root";
         String pwd = "";
+
+        CLI myCli = new CLI();
+        myCli.start();
 
         try {
             Connection myConnection = MysqlDatabaseConnection.getConnection(url, user, pwd);
