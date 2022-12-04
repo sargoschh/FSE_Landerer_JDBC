@@ -29,7 +29,6 @@ public class CLI {
                     break;
                 case "2":
                     showAllCourses();
-
                     break;
                 case "x":
                     System.out.println("Auf Wiedersehen!");
