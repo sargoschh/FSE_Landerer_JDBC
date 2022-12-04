@@ -6,6 +6,7 @@ import dataaccess.MySqlCourseRepository;
 import domain.Course;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class CLI {
@@ -30,6 +31,9 @@ public class CLI {
                 case "2":
                     showAllCourses();
                     break;
+                case "3":
+                    showCourseDetails();
+                    break;
                 case "x":
                     System.out.println("Auf Wiedersehen!");
                     break;
@@ -39,6 +43,23 @@ public class CLI {
             }
         }
         this.scan.close();
+    }
+
+    private void showCourseDetails() {
+        System.out.println("Für welchen Kurs möchten Sie die Kursdetails anzeigen?");
+        Long courseId = Long.parseLong(scan.nextLine());
+        try {
+            Optional<Course> courseOptional = repo.getById(courseId);
+            if(courseOptional.isPresent()) {
+                System.out.println(courseOptional.get());
+            } else {
+                System.out.println("Kurs mit der ID " + courseId + " nicht gefunden!");
+            }
+        } catch (DatabaseException e) {
+            System.out.println("Datenbankfehler bei Kurs-Detailanzeige: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unbekannter Fehler bei Kurs-Detailanzeige: " + e.getMessage());
+        }
     }
 
     private void showAllCourses() {
@@ -63,7 +84,7 @@ public class CLI {
     private void showMenue() {
 
         System.out.println("---------------------- KURSMANAGEMENT ----------------------");
-        System.out.println("\t(1) Kurs eingeben\n\t(2) Alle Kurse anzeigen\n\t(x) Beenden");
+        System.out.println("\t(1) Kurs eingeben\n\t(2) Alle Kurse anzeigen\n\t(3) Kursdetails anzeigen\n\t(x) Beenden");
     }
 
     private void inputError() {
