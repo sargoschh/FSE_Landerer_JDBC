@@ -225,6 +225,27 @@ public class MySqlCourseRepository implements MyCourseRepository {
 
     @Override
     public List<Course> findAllRunningCourses() {
-        return null;
+
+        String sql = "SELECT * FROM `courses` WHERE NOW()<`enddate` AND NOW()>`begindate`";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            ArrayList<Course> courseList = new ArrayList<>();
+            while(resultSet.next()) {
+                courseList.add(new Course(
+                        resultSet.getLong("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("description"),
+                        resultSet.getInt("hours"),
+                        resultSet.getDate("begindate"),
+                        resultSet.getDate("enddate"),
+                        CourseType.valueOf(resultSet.getString("coursetype"))
+                ));
+            }
+            return courseList;
+        } catch (SQLException sqlException) {
+            throw new DatabaseException(sqlException.getMessage());
+        }
+
     }
 }

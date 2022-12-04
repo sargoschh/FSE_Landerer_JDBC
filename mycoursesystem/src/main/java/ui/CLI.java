@@ -8,6 +8,7 @@ import domain.CourseType;
 import domain.InvalidValueException;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -46,6 +47,9 @@ public class CLI {
                 case "6":
                     courseSearch();
                     break;
+                case "7":
+                    runningCourses();
+                    break;
                 case "x":
                     System.out.println("Auf Wiedersehen!");
                     break;
@@ -55,6 +59,21 @@ public class CLI {
             }
         }
         this.scan.close();
+    }
+
+    private void runningCourses() {
+        System.out.println("Laufende Kurse: ");
+        List<Course> list;
+        try {
+            list = repo.findAllRunningCourses();
+            for (Course c : list) {
+                System.out.println(c);
+            }
+        } catch (DatabaseException databaseException) {
+            System.out.println("Datenbankfehler bei Kurs-Anzeige für laufende Kurse: " + databaseException.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unbekannter Fehler bei Kurs-Anzeige für laufende Kurse: " + e.getMessage());
+        }
     }
 
     private void courseSearch() {
@@ -243,7 +262,7 @@ public class CLI {
 
         System.out.println("---------------------- KURSMANAGEMENT ----------------------");
         System.out.println("\t(1) Kurs eingeben\n\t(2) Alle Kurse anzeigen\n\t(3) Kursdetails anzeigen\n\t" +
-                "(4) Kursdetails ändern\n\t(5) Kurs löschen\n\t(6) Kurssuche\n\t(x) Beenden");
+                "(4) Kursdetails ändern\n\t(5) Kurs löschen\n\t(6) Kurssuche\n\t(7) Laufende Kurse\n\t(x) Beenden");
     }
 
     private void inputError() {
