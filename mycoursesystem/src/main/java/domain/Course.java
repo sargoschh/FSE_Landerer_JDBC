@@ -2,7 +2,7 @@ package domain;
 
 import java.sql.Date;
 
-public class Course{
+public class Course extends BaseEntity {
 
     private String name;
     private String description;
@@ -11,11 +11,31 @@ public class Course{
     private Date endDate;
     private CourseType courseType;
 
+    public Course(Long id, String name, String description, int hours, Date beginDate, Date endDate, CourseType courseType) throws InvalidValueException {
+        super(id);
+        this.setName(name);
+        this.setDescription(description);
+        this.setHours(hours);
+        this.setBeginDate(beginDate);
+        this.setEndDate(endDate);
+        this.setCourseType(courseType);
+    }
+
+    public Course(String name, String description, int hours, Date beginDate, Date endDate, CourseType courseType) throws InvalidValueException {
+        super(null);
+        this.setName(name);
+        this.setDescription(description);
+        this.setHours(hours);
+        this.setBeginDate(beginDate);
+        this.setEndDate(endDate);
+        this.setCourseType(courseType);
+    }
+
     public String getName() {
         return name;
     }
 
-    public void setName(String name) throws InvalidValueException{
+    public void setName(String name) throws InvalidValueException {
         if(name!=null && name.length()>1) {
             this.name = name;
         } else {
@@ -27,7 +47,7 @@ public class Course{
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description) throws InvalidValueException {
         if(description!=null && description.length()>10) {
             this.description = description;
         } else {
@@ -40,7 +60,7 @@ public class Course{
         return hours;
     }
 
-    public void setHours(int hours) {
+    public void setHours(int hours) throws InvalidValueException {
         if(hours>0 && hours<10) {
             this.hours = hours;
         } else {
@@ -52,7 +72,7 @@ public class Course{
         return beginDate;
     }
 
-    public void setBeginDate(Date beginDate) {
+    public void setBeginDate(Date beginDate) throws InvalidValueException {
         if(beginDate!=null) {
             if(this.endDate != null) {
                 if(beginDate.before(this.endDate)) {
@@ -73,7 +93,7 @@ public class Course{
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Date endDate) throws InvalidValueException {
         if(endDate!=null) {
             if(this.beginDate != null) {
                 if(endDate.after(this.beginDate)) {
@@ -93,12 +113,24 @@ public class Course{
         return courseType;
     }
 
-    public void setCourseType(CourseType courseType) {
+    public void setCourseType(CourseType courseType) throws InvalidValueException {
         if(courseType!=null)  {
             this.courseType = courseType;
         } else {
             throw new InvalidValueException("Kurstyp darf nicht null / leer sein!");
         }
+    }
 
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + this.getId() +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", hours=" + hours +
+                ", beginDate=" + beginDate +
+                ", endDate=" + endDate +
+                ", courseType=" + courseType +
+                '}';
     }
 }
