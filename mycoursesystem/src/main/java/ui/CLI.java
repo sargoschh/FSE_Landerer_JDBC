@@ -29,30 +29,14 @@ public class CLI {
             showMenue();
             input = this.scan.nextLine();
             switch (input) {
-                case "1":
-                    addCourse();
-                    break;
-                case "2":
-                    showAllCourses();
-                    break;
-                case "3":
-                    showCourseDetails();
-                    break;
-                case "4":
-                    updateCourseDetails();
-                    break;
-                case "5":
-                    deleteCourse();
-                    break;
-                case "6":
-                    search();
-                    break;
-                case "x":
-                    System.out.println("Auf Wiedersehen!");
-                    break;
-                default:
-                    inputError();
-                    break;
+                case "1" -> addCourse();
+                case "2" -> showAllCourses();
+                case "3" -> showCourseDetails();
+                case "4" -> updateCourseDetails();
+                case "5" -> deleteCourse();
+                case "6" -> search();
+                case "x" -> System.out.println("Auf Wiedersehen!");
+                default -> inputError();
             }
         }
         this.scan.close();
@@ -65,30 +49,14 @@ public class CLI {
             showSearchMenue();
             input = this.scan.nextLine();
             switch (input) {
-                case "1":
-                    courseSearchByName();
-                    break;
-                case "2":
-                    courseSearchByDescription();
-                    break;
-                case "3":
-                    courseSearch();
-                    break;
-                case "4":
-                    courseSearchByCoursetype();
-                    break;
-                case "5":
-                    courseSearchByStartdate();
-                    break;
-                case "6":
-                    runningCourses();
-                    break;
-                case "x":
-
-                    break;
-                default:
-                    inputError();
-                    break;
+                case "1" -> courseSearchByName();
+                case "2" -> courseSearchByDescription();
+                case "3" -> courseSearch();
+                case "4" -> courseSearchByCoursetype();
+                case "5" -> courseSearchByStartdate();
+                case "6" -> runningCourses();
+                case "x" -> System.out.println("");
+                default -> inputError();
             }
         }
     }
