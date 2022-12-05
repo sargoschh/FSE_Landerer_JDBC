@@ -181,26 +181,67 @@ public class MySqlStudentRepository implements MyStudentRepository {
 
     @Override
     public List<Student> findAllStudentsByFirstName(String firstName) {
-        return null;
+        try {
+            String sql = "SELECT * FROM `students` WHERE LOWER(`firstname`) LIKE LOWER(?)";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, "%"+firstName+"%");
+
+            return getStudentList(preparedStatement);
+        } catch (SQLException sqlException) {
+            throw new DatabaseException(sqlException.getMessage());
+        }
     }
 
     @Override
-    public List<Student> findAllStudentsByLastName(String LastName) {
-        return null;
+    public List<Student> findAllStudentsByLastName(String lastName) {
+        try {
+            String sql = "SELECT * FROM `students` WHERE LOWER(`lastname`) LIKE LOWER(?)";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, "%"+lastName+"%");
+
+            return getStudentList(preparedStatement);
+        } catch (SQLException sqlException) {
+            throw new DatabaseException(sqlException.getMessage());
+        }
     }
 
     @Override
     public List<Student> findAllStudentsByName(String name) {
-        return null;
+        try {
+            String sql = "SELECT * FROM `students` WHERE CONCAT(CONCAT(LOWER(`firstname`), ' '), LOWER(`lastname`)) LIKE LOWER(?)";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, "%"+name+"%");
+
+            return getStudentList(preparedStatement);
+        } catch (SQLException sqlException) {
+            throw new DatabaseException(sqlException.getMessage());
+        }
     }
 
     @Override
     public List<Student> findAllStudentsByBirthYear(String year) {
-        return null;
+        try {
+            String sql = "SELECT * FROM `students` WHERE YEAR(`birthdate`) LIKE ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, String.valueOf(year));
+
+            return getStudentList(preparedStatement);
+        } catch (SQLException sqlException) {
+            throw new DatabaseException(sqlException.getMessage());
+        }
     }
 
     @Override
     public List<Student> findAllStudentsBetweenTwoDates(Date dateOne, Date dateTwo) {
-        return null;
+        try {
+            String sql = "SELECT * FROM `students` WHERE `birthdate` > ? AND `birthdate` < ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, String.valueOf(dateOne));
+            preparedStatement.setString(2, String.valueOf(dateTwo));
+
+            return getStudentList(preparedStatement);
+        } catch (SQLException sqlException) {
+            throw new DatabaseException(sqlException.getMessage());
+        }
     }
 }

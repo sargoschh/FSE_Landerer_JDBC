@@ -75,7 +75,6 @@ public class MySqlCourseRepository implements MyCourseRepository {
                 resultSet.next();
 
                 Course course = newCourse(resultSet);
-
                 return Optional.of(course);
             } catch (SQLException e) {
                 throw new DatabaseException(e.getMessage());
