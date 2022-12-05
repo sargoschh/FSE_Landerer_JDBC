@@ -74,15 +74,8 @@ public class MySqlCourseRepository implements MyCourseRepository {
 
                 resultSet.next();
 
-                Course course = new Course(
-                        resultSet.getLong("id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("description"),
-                        resultSet.getInt("hours"),
-                        resultSet.getDate("begindate"),
-                        resultSet.getDate("enddate"),
-                        CourseType.valueOf(resultSet.getString("coursetype"))
-                );
+                Course course = newCourse(resultSet);
+
                 return Optional.of(course);
             } catch (SQLException e) {
                 throw new DatabaseException(e.getMessage());
@@ -111,20 +104,28 @@ public class MySqlCourseRepository implements MyCourseRepository {
             ResultSet resultSet = preparedStatement.executeQuery();
             ArrayList<Course> courseList = new ArrayList<>();
             while (resultSet.next()) {
-                courseList.add(new Course(
-                                resultSet.getLong("id"),
-                                resultSet.getString("name"),
-                                resultSet.getString("description"),
-                                resultSet.getInt("hours"),
-                                resultSet.getDate("begindate"),
-                                resultSet.getDate("enddate"),
-                                CourseType.valueOf(resultSet.getString("coursetype"))
-                        )
-                );
+                courseList.add(newCourse(resultSet));
             }
             return courseList;
         } catch (SQLException e) {
             throw new DatabaseException("Database error occured!");
+        }
+    }
+
+    public Course newCourse(ResultSet resultSet) {
+        try {
+            Course course = new Course(
+                    resultSet.getLong("id"),
+                    resultSet.getString("name"),
+                    resultSet.getString("description"),
+                    resultSet.getInt("hours"),
+                    resultSet.getDate("begindate"),
+                    resultSet.getDate("enddate"),
+                    CourseType.valueOf(resultSet.getString("coursetype"))
+            );
+            return course;
+        } catch (SQLException sqlException) {
+            throw new DatabaseException(sqlException.getMessage());
         }
     }
 
