@@ -45,10 +45,7 @@ public class CLI {
                     deleteCourse();
                     break;
                 case "6":
-                    courseSearch();
-                    break;
-                case "7":
-                    runningCourses();
+                    search();
                     break;
                 case "x":
                     System.out.println("Auf Wiedersehen!");
@@ -59,6 +56,106 @@ public class CLI {
             }
         }
         this.scan.close();
+    }
+
+    private void search() {
+        String input = "-";
+        while(!input.equalsIgnoreCase("x")) {
+
+            showSearchMenue();
+            input = this.scan.nextLine();
+            switch (input) {
+                case "1":
+                    courseSearchByName();
+                    break;
+                case "2":
+                    courseSearchByDescription();
+                    break;
+                case "3":
+                    courseSearch();
+                    break;
+                case "4":
+                    courseSearchByCoursetype();
+                    break;
+                case "5":
+                    courseSearchByStartdate();
+                    break;
+                case "6":
+                    runningCourses();
+                    break;
+                case "x":
+
+                    break;
+                default:
+                    inputError();
+                    break;
+            }
+        }
+    }
+
+    private void courseSearchByName() {
+        System.out.println("Geben Sie den gewünschten Namen an: ");
+        String searchString = scan.nextLine();
+        List<Course> courseList;
+        try {
+            courseList = repo.findAllCoursesByName(searchString);
+            for(Course c : courseList) {
+                System.out.println(c);
+            }
+        }catch (DatabaseException databaseException) {
+            System.out.println("Datenbankfehler bei der Kurssuche mit Namen: " + databaseException.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unbekannter Fehler bei der Kurssuche mit Namen: " + e.getMessage());
+        }
+    }
+
+    private void courseSearchByDescription() {
+        System.out.println("Geben Sie einen Suchbegriff aus der Beschreibung an: ");
+        String searchString = scan.nextLine();
+        List<Course> courseList;
+        try {
+            courseList = repo.findAllCoursesByDescription(searchString);
+            for(Course c : courseList) {
+                System.out.println(c);
+            }
+        }catch (DatabaseException databaseException) {
+            System.out.println("Datenbankfehler bei der Kurssuche: " + databaseException.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unbekannter Fehler bei der Kurssuche: " + e.getMessage());
+        }
+    }
+
+    private void courseSearchByCoursetype() {
+        System.out.println("Geben Sie einen Kurstyp an: ");
+        String searchString = scan.nextLine();
+
+        List<Course> courseList;
+        try {
+            courseList = repo.findAllCoursesByCourseType(CourseType.valueOf(searchString.toUpperCase()));
+            for(Course c : courseList) {
+                System.out.println(c);
+            }
+        }catch (DatabaseException databaseException) {
+            System.out.println("Datenbankfehler bei der Kurssuche: " + databaseException.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unbekannter Fehler bei der Kurssuche: " + e.getMessage());
+        }
+    }
+
+    private void courseSearchByStartdate() {
+        System.out.println("Geben Sie das gewünschte Startdatum an: ");
+        String searchString = scan.nextLine();
+        List<Course> courseList;
+        try {
+            courseList = repo.findAllCoursesByStartDate(Date.valueOf(searchString));
+            for(Course c : courseList) {
+                System.out.println(c);
+            }
+        }catch (DatabaseException databaseException) {
+            System.out.println("Datenbankfehler bei der Kurssuche: " + databaseException.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unbekannter Fehler bei der Kurssuche: " + e.getMessage());
+        }
     }
 
     private void runningCourses() {
@@ -262,7 +359,13 @@ public class CLI {
 
         System.out.println("---------------------- KURSMANAGEMENT ----------------------");
         System.out.println("\t(1) Kurs eingeben\n\t(2) Alle Kurse anzeigen\n\t(3) Kursdetails anzeigen\n\t" +
-                "(4) Kursdetails ändern\n\t(5) Kurs löschen\n\t(6) Kurssuche\n\t(7) Laufende Kurse\n\t(x) Beenden");
+                "(4) Kursdetails ändern\n\t(5) Kurs löschen\n\t(6) Kurssuche\n\t(x) Beenden");
+    }
+
+    private void showSearchMenue() {
+        System.out.println("\t(1) Suche mit Kursnamen\n\t(2) Suche mit Kursbeschreibung\n\t" +
+                "(3) Suche mit Kursname oder -beschreibung\n\t(4) Suche mit Kurstyp\n\t" +
+                "(5) Suche mit Startdatum\n\t(6) Suche alle laufenden Kurse\n\t(x) Zurück zum Kursmanagement");
     }
 
     private void inputError() {
