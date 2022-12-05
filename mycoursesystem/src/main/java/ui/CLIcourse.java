@@ -331,7 +331,7 @@ public class CLIcourse {
     private void showSearchMenue() {
         System.out.println("\t(1) Suche mit Kursnamen\n\t(2) Suche mit Kursbeschreibung\n\t" +
                 "(3) Suche mit Kursname oder -beschreibung\n\t(4) Suche mit Kurstyp\n\t" +
-                "(5) Suche mit Startdatum\n\t(6) Suche alle laufenden Kurse\n\t(x) Zurück zum Kursmanagement");
+                "(5) Suche mit Startdatum\n\t(6) Suche alle laufenden Kurse\n\t(x) Zurück zum Management");
     }
 
     private void inputError() {

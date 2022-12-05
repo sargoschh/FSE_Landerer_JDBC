@@ -1,7 +1,5 @@
 package dataaccess;
 
-import domain.Course;
-import domain.CourseType;
 import domain.Student;
 import util.Assert;
 
@@ -35,7 +33,7 @@ public class MySqlStudentRepository implements MyStudentRepository {
 
         try {
             String sql = "INSERT INTO `students` (`firstname`, `lastname`, `birthdate`) VALUES (?, ?, ?)";
-            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             updateAndInsert(preparedStatement, entity);
 
@@ -232,12 +230,12 @@ public class MySqlStudentRepository implements MyStudentRepository {
     }
 
     @Override
-    public List<Student> findAllStudentsBetweenTwoDates(Date dateOne, Date dateTwo) {
+    public List<Student> findAllStudentsBetweenTwoDates(String dateOne, String dateTwo) {
         try {
             String sql = "SELECT * FROM `students` WHERE `birthdate` > ? AND `birthdate` < ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setString(1, String.valueOf(dateOne));
-            preparedStatement.setString(2, String.valueOf(dateTwo));
+            preparedStatement.setString(1, dateOne);
+            preparedStatement.setString(2, dateTwo);
 
             return getStudentList(preparedStatement);
         } catch (SQLException sqlException) {

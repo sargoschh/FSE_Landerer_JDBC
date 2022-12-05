@@ -1,6 +1,8 @@
 package at.itkollegimst;
 
 import dataaccess.MySqlCourseRepository;
+import dataaccess.MySqlStudentRepository;
+import dataaccess.MyStudentRepository;
 import dataaccess.MysqlDatabaseConnection;
 import ui.CLI;
 import ui.CLIcourse;
@@ -15,7 +17,7 @@ public class Main {
 
         try {
             CLIcourse course = new CLIcourse(new MySqlCourseRepository());
-            CLIstudent student = new CLIstudent();
+            CLIstudent student = new CLIstudent(new MySqlStudentRepository());
             CLI myCli = new CLI(course, student);
             myCli.start();
         } catch (SQLException e) {

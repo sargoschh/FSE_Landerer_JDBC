@@ -34,7 +34,7 @@ public class CLI {
     }
 
     private void startStudent() {
-        System.out.println("Student");
+        this.student.start();
     }
 
     private void showMenue() {

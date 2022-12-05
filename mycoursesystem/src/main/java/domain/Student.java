@@ -64,4 +64,14 @@ public class Student extends BaseEntity {
         }
 
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id= '" + this.getId() + '\'' +
+                ", firstName= '" + firstName + '\'' +
+                ", lastName= '" + lastName + '\'' +
+                ", birthdate= " + birthdate +
+                '}';
+    }
 }
