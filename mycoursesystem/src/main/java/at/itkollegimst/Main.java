@@ -2,13 +2,10 @@ package at.itkollegimst;
 
 import dataaccess.MySqlCourseRepository;
 import dataaccess.MySqlStudentRepository;
-import dataaccess.MyStudentRepository;
-import dataaccess.MysqlDatabaseConnection;
 import ui.CLI;
 import ui.CLIcourse;
 import ui.CLIstudent;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 public class Main {

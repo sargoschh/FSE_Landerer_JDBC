@@ -1,19 +1,4 @@
-# FSE_Landerer_JDBC Dokumentation
-
-Du musst neue Konzepte verstehen und erklären können und diese selbst dokumentieren
-(Markdown), dazu zählen:
-* MySQL-Datenbankserver einreichten
-* DB-Server Adminkonsole einreichten und verwenden können (insb. auch SQL-Statements
-absetzen können)
-* Java-Maven-Projekt erstellen
-* Dependency für die Verbindung einer MySQL-Datenbank in der pom.xml hinzufügen
-* Verbindung zur Datenbank aufbauen
-* Prepared-Statement für die Abfrage von Daten aus der DB verwenden
-* Prepared-Statement für die Änderung von Daten in der DB verwenden
-* Abgefragte Daten aus der DB mit ResultSet und Schleifen verarbeiten
-* Exceptions verwenden und verarbeiten, die auftreten können
-* Debugging von JDBC-Applikationen (SQL-Statements prüfen, Exceptions richtig interpretieren,
-Debugger verwenden)
+# JDBC INTRO
 
 ## MySQL-Datenbankserver einrichten
 
@@ -112,3 +97,109 @@ PreparedStatement preparedStatement = con.prepareStatement(
 Der Methode, in der das Update vollzogen wird, werden die neuen Datensätze mitgegeben, welche dann dem SQL-Statement mitgegeben werden. In diesem Beispiel wurde der Datensatz mit der ID 3 verändert, da sich der Name nach eine Hochzeit geändert hat.
 
 ![Kommandozeilenausgabe_aktualisiert](Bilder/IntelliJ_sout_aktualisiert.jpg)
+
+## Abgefragte Daten aus der DB mit ResultSet und Schleifen verarbeiten
+
+Möchte man Daten aus einer Datenbank herausholen und dann weiterverarbeiten, so werden diese zunächst in ein ResultSet gespeichert. Dort sind diese wie in einem assoziativem Array gespeichert und können mit dem passenden Getter und dem Key aus diesem herausgeholt werden.
+
+````java
+PreparedStatement preparedStatement = con.prepareStatement(sqlSelectAllPersons);
+            ResultSet rs =  preparedStatement.executeQuery();
+            while(rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                System.out.println("Student aus der DB: [ID] " + id + " [NAME] " + name + " [EMAIL] " + email);
+            }
+````
+
+In diesem Fall werden die Inhalte in Variablen gespeichert und anschließend auf der Kommandozeile ausgegeben.
+
+
+## Exceptions verwenden und verarbeiten, die auftreten können
+
+Eine Exception ist ein Ereignis, das während der Ausführung eines Programms auftritt und den normalen Ablauf der Programmanweisungen stört. Arbeitet man mit einer Datenbank, könnte z.B. eine SQLException auftreten. Um unterscheiden zu können, wann die Exception auftritt, kann diese an verschiedenen Codestellen "gefangen" werden. 
+
+````java
+try (Connection con = DriverManager.getConnection(connectionUrl, user, pwd)){
+    System.out.println("Verbindung zur DB hergestellt!");
+    PreparedStatement preparedStatement = con.prepareStatement(
+        "INSERT INTO `kurs` (`id`, `name`, `maxstudents`) VALUES (NULL, ?, ?)");
+    try {
+        preparedStatement.setString(1, name);
+        preparedStatement.setInt(2, maxStudents);
+        int rowAffected = preparedStatement.executeUpdate();
+        System.out.println(rowAffected + " Datensätze eingefügt");
+    } catch (SQLException ex) { //reagiert auf Absetzen des Statements
+        System.out.println("Fehler im SQL-INSERT Statement: " + ex.getMessage());
+    }
+
+} catch (SQLException e) { //reagiert auf den Verbindungsaufbau zur Datenbank
+    System.out.println("Fehler beim Aufbau der Verbindung zur DB: \n" + e.getMessage());
+}
+````
+
+Hier wird im äußeren try-catch-Block eine SQLException geworfen, wenn die Verbindung zur Datenbank fehlgeschlagen ist - im inneren try-catch-Block wird die SQLException geworfen, wenn das Absetzen des SQL-Statements fehlgeschlagen ist. Man könnte natürlich eigene Exceptions entwerfen, die in speziellen Fällen zum Einsatz kommen.
+
+# JDBC und DAO
+
+## DAO-Pattern zum objektrelationalen Zugriff auf Datenbanken verstehen und anwenden
+
+
+
+![DAO-Pattern](Bilder/DAO-Pattern.jpg)
+
+## Grundkonzept des objektrelationalen Mappings verstehen
+
+Unter objektrelationalem Mapping versteht man eine Technik in der Softwareentwicklung, mit der ein in einer objektorientierten Programmiersprache geschriebendes Anwendungsprogramm seine Objekte in einer relationalen Datenbank ablegen kann. Dem Programm erscheint die Datenbank dann als objektorientierte Datenbank, was die Programmierung erleichtert. (https://de.wikipedia.org/wiki/Objektrelationale_Abbildung)
+
+In unserem Fall werden den Tabellen der Datenbank entsprechend Klassen implementiert, deren Datenfelder den Spalten der Tabelle entsprechen.
+
+![KlasseStudentUndKurs](Bilder/CourseStudent.jpg)
+![Tabelle_Courses](Bilder/Tabelle_courses.jpg) 
+![Tabelle_Students](Bilder/Tabelle_students.jpg)
+
+Ein Kurs/Student wird also erstellt, wenn ein neuer Datensatz in der Datenbank eingefügt wird, oder wenn ein bereits vorhandener Datensatz aus der Datenbank geholt wird.
+
+## Singleton-Pattern zum Aufbau der DB-Verbindung verstehen und anwenden
+
+Um im Programm nicht jedes mal eine neue Verbindung zu Datenbank herstellen zu müssen und in 
+
+````java
+public class MysqlDatabaseConnection {
+
+    private static Connection con = null;
+
+    private MysqlDatabaseConnection() {
+
+    }
+
+    public static Connection getConnection(String url, String user, String pwd) throws ClassNotFoundException, SQLException {
+        if(con != null){
+            return con;
+        } else {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection(url, user, pwd);
+            return con;
+        }
+    }
+
+}
+````
+
+## Commandline-Interface (Kommandozeilenmenü) sauber programmieren
+
+
+## Exceptions verstehen und verwenden
+
+
+## Abstrakte Klassen verstehen und verwenden
+
+
+## Interfaces (auch mit Erben für Interfaces) verstehen und verwenden
+
+
+## Domänenklassen korrekt aufbauen (Objekte immer im konsistenten Zustand halten, Exceptions verwenden, Setter absichern)
+
+
+## CRUD-Operationen mit DAO-Pattern und JDBC umsetzen

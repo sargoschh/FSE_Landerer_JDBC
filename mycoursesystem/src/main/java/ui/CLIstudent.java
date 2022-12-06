@@ -2,8 +2,6 @@ package ui;
 
 import dataaccess.DatabaseException;
 import dataaccess.MyStudentRepository;
-import domain.Course;
-import domain.CourseType;
 import domain.InvalidValueException;
 import domain.Student;
 
