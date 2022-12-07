@@ -4,10 +4,17 @@ import java.sql.Date;
 
 public class Booking {
 
-    private Student student;
     private Course course;
+    private Student student;
     private Date bookingDate;
     private boolean approved;
+
+    public Booking(Course course, Student student, Date bookingDate, boolean approved) {
+        setCourse(course);
+        setStudent(student);
+        setBookingDate(bookingDate);
+        setApproved(approved);
+    }
 
     public Student getStudent() {
         return student;
@@ -61,9 +68,10 @@ public class Booking {
     @Override
     public String toString() {
         return "Booking{" +
-                "student=" + student +
-                ", course=" + course +
+                "course= {id:" + course.getId() + ", name:" + course.getName() + "}" +
+                ", student=" + student.getFirstName() + " " + student.getLastName() +
                 ", bookingDate=" + bookingDate +
+                ", approved=" + approved +
                 '}';
     }
 }

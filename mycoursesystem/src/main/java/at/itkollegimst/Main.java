@@ -1,8 +1,10 @@
 package at.itkollegimst;
 
+import dataaccess.MySqlBookingRepository;
 import dataaccess.MySqlCourseRepository;
 import dataaccess.MySqlStudentRepository;
 import ui.CLI;
+import ui.CLIbooking;
 import ui.CLIcourse;
 import ui.CLIstudent;
 
@@ -15,7 +17,8 @@ public class Main {
         try {
             CLIcourse course = new CLIcourse(new MySqlCourseRepository());
             CLIstudent student = new CLIstudent(new MySqlStudentRepository());
-            CLI myCli = new CLI(course, student);
+            CLIbooking booking = new CLIbooking(new MySqlBookingRepository());
+            CLI myCli = new CLI(course, student, booking);
             myCli.start();
         } catch (SQLException e) {
             System.out.println("Datenbankfehler: " + e.getMessage() + " SQL State: " + e.getSQLState());
