@@ -2,14 +2,23 @@ package domain;
 
 import java.sql.Date;
 
-public class Booking {
+public class Booking extends BaseEntity{
 
     private Course course;
     private Student student;
     private Date bookingDate;
     private boolean approved;
 
+    public Booking(Long id, Course course, Student student, Date bookingDate, boolean approved) {
+        super(id);
+        setCourse(course);
+        setStudent(student);
+        setBookingDate(bookingDate);
+        setApproved(approved);
+    }
+
     public Booking(Course course, Student student, Date bookingDate, boolean approved) {
+        super(null);
         setCourse(course);
         setStudent(student);
         setBookingDate(bookingDate);

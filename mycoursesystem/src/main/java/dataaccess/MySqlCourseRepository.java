@@ -83,7 +83,7 @@ public class MySqlCourseRepository implements MyCourseRepository {
 
     }
 
-    private int countCoursesInDbWithId(Long id) {
+    public int countCoursesInDbWithId(Long id) {
         try {
             String countSql = "SELECT COUNT(*) FROM `courses` WHERE `id`=?";
             PreparedStatement preparedStatementCount = con.prepareStatement(countSql);
