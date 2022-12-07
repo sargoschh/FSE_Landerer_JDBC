@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="625a1ee7-07ae-4c4b-8ac9-a2a33aa71546" name="Changes" comment="Doku 1.0">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mycoursesystem/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../mycoursesystem/.idea/misc.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +75,7 @@
       <workItem from="1669665994888" duration="3995000" />
       <workItem from="1669724421086" duration="76000" />
       <workItem from="1669795861112" duration="683000" />
-      <workItem from="1670329502693" duration="2476000" />
+      <workItem from="1670329502693" duration="2477000" />
     </task>
     <task id="LOCAL-00001" summary="Demo-Projekt erstellt">
       <created>1669190684421</created>
