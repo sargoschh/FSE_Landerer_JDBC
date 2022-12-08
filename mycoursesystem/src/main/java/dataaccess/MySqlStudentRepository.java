@@ -133,7 +133,7 @@ public class MySqlStudentRepository implements MyStudentRepository {
     public Optional<Student> update(Student entity) {
         Assert.notNull(entity);
 
-        String updateSql = "UPDATE `courses` SET `name` = ?, `description` = ?, `hours` = ?, `begindate` = ?, `enddate` = ?, `coursetype` = ? WHERE `courses`.`id` = ?";
+        String updateSql = "UPDATE `students` SET `firstname` = ?, `lastname` = ?, `birthdate` = ? WHERE `students`.`id` = ?";
 
         if(countStudentsInDbWithId(entity.getId())==0) {
             return Optional.empty();
@@ -143,7 +143,7 @@ public class MySqlStudentRepository implements MyStudentRepository {
 
                 updateAndInsert(preparedStatement, entity);
 
-                preparedStatement.setLong(7, entity.getId());
+                preparedStatement.setLong(4, entity.getId());
 
                 int affectedRows = preparedStatement.executeUpdate();
 

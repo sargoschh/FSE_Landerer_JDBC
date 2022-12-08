@@ -94,7 +94,31 @@ public class MySqlBookingRepository implements MyBookingRepository {
 
     @Override
     public Optional<Booking> update(Booking entity) {
-        return Optional.empty();
+        Assert.notNull(entity);
+
+        String updateSql = "UPDATE `studentbookscourse` SET `approved` = ? WHERE `studentbookscourse`.`id` = ?";
+
+        if(countBookingsInDbWithId(entity.getId())==0) {
+            return Optional.empty();
+        } else {
+            try {
+                PreparedStatement preparedStatement = con.prepareStatement(updateSql);
+
+                preparedStatement.setBoolean(1, entity.isApproved());
+                preparedStatement.setLong(2, entity.getId());
+
+                int affectedRows = preparedStatement.executeUpdate();
+
+                if (affectedRows==0) {
+                    return Optional.empty();
+                } else {
+                    return this.getById(entity.getId());
+                }
+
+            } catch (SQLException sqlException) {
+                throw new DatabaseException(sqlException.getMessage());
+            }
+        }
     }
 
     @Override

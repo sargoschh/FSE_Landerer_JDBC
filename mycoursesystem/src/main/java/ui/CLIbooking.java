@@ -32,9 +32,59 @@ public class CLIbooking {
                 case "1" -> addBookings();
                 case "2" -> showAllBookings();
                 case "3" -> showBookingDetails();
+                case "4" -> updateBookingDetails();
                 case "x" -> System.out.println("");
                 default -> inputError();
             }
+        }
+    }
+
+    private void updateBookingDetails() {
+
+        try {
+            System.out.println("Für welche Buchungs-ID möchten Sie Änderungen vornehmen?");
+            Long buchungId = Long.parseLong(scan.nextLine());
+            String s = "-";
+            Optional<Booking> bookingOptional = repo.getById(buchungId);
+            if(bookingOptional.isEmpty()) {
+                System.out.println("Keine Buchung mit der ID " + buchungId + " vorhanden!");
+            } else {
+                Booking booking = bookingOptional.get();
+                if(booking.isApproved()) {
+                    System.out.println("Der Kurs ist bereits bestätigt. " +
+                            "Möchten Sie die Bestätigung wieder rückgängig machen? (j/n)");
+                    s = scan.nextLine();
+                    if (s.equalsIgnoreCase("j")) {
+                        booking.setApproved(false);
+                    } else if (s.equalsIgnoreCase("n")) {
+                        booking.setApproved(true);
+                    } else {
+                        throw new IllegalArgumentException("Eingabefehler!");
+                    }
+                } else {
+                    System.out.println("Der Kurs ist noch nicht bestätigt. " +
+                            "Möchten Sie den Kurs nun bestätigen? (j/n)");
+                    s = scan.nextLine();
+                    if (s.equalsIgnoreCase("j")) {
+                        booking.setApproved(true);
+                    } else if (s.equalsIgnoreCase("n")) {
+                        booking.setApproved(false);
+                    } else {
+                        throw new IllegalArgumentException("Eingabefehler!");
+                    }
+                }
+
+                Optional<Booking> optionalBookingUpdated = repo.update(booking);
+
+                optionalBookingUpdated.ifPresentOrElse(
+                        (c) -> System.out.println("Buchung wurde aktualisiert!"),
+                        () -> System.out.println("Buchung konnte nicht aktualisiert werden!")
+                );
+            }
+        } catch (DatabaseException databaseException) {
+            System.out.println("Datenbankfehler beim Einfügen: " + databaseException.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unbekannter Fehler beim Einfügen: " + e.getMessage());
         }
     }
 
@@ -119,7 +169,7 @@ public class CLIbooking {
 
         System.out.println("------------------- BUCHUNGSMANAGEMENT ---------------------");
         System.out.println("\t(1) Kurs buchen\n\t(2) Alle Buchungen anzeigen\n\t(3) Buchungsdetails anzeigen\n\t" +
-                "(4) Studentendetails ändern\n\t(5) Student löschen\n\t(6) Studentensuche\n\t(x) Beenden");
+                "(4) Buchungsstatus ändern\n\t(5) Student löschen\n\t(6) Studentensuche\n\t(x) Beenden");
     }
 
     private void showSearchMenue() {

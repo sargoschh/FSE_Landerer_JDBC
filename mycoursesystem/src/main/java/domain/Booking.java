@@ -76,8 +76,8 @@ public class Booking extends BaseEntity{
 
     @Override
     public String toString() {
-        return "Booking{" +
-                "course= {id:" + course.getId() + ", name:" + course.getName() + "}" +
+        return "Booking{" + "id=" + this.getId() +
+                ", course= {id:" + course.getId() + ", name:" + course.getName() + "}" +
                 ", student=" + student.getFirstName() + " " + student.getLastName() +
                 ", bookingDate=" + bookingDate +
                 ", approved=" + approved +
