@@ -123,7 +123,19 @@ public class MySqlBookingRepository implements MyBookingRepository {
 
     @Override
     public void deleteById(Long id) {
+        Assert.notNull(id);
 
+        String deleteSql = "DELETE FROM `studentbookscourse` WHERE `id`=?";
+
+        if(countBookingsInDbWithId(id)==1) {
+            try {
+                PreparedStatement preparedStatement = con.prepareStatement(deleteSql);
+                preparedStatement.setLong(1, id);
+                preparedStatement.executeUpdate();
+            } catch (SQLException sqlException) {
+                throw new DatabaseException(sqlException.getMessage());
+            }
+        }
     }
 
     private int countBookingsInDbWithId(Long id) {

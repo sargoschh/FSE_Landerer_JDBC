@@ -33,16 +33,29 @@ public class CLIbooking {
                 case "2" -> showAllBookings();
                 case "3" -> showBookingDetails();
                 case "4" -> updateBookingDetails();
+                case "5" -> deleteBooking();
                 case "x" -> System.out.println("");
                 default -> inputError();
             }
         }
     }
 
+    private void deleteBooking() {
+        System.out.println("Welche Buchung möchten Sie löschen? Bitte ID eingeben: ");
+        try {
+            Long bookingId = Long.parseLong(scan.nextLine());
+            repo.deleteById(bookingId);
+        } catch (DatabaseException databaseException) {
+            System.out.println("Datenbankfehler beim Löschen: " + databaseException.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unbekannter Fehler beim Löschen: " + e.getMessage());
+        }
+    }
+
     private void updateBookingDetails() {
+        System.out.println("Für welche Buchungs-ID möchten Sie Änderungen vornehmen?");
 
         try {
-            System.out.println("Für welche Buchungs-ID möchten Sie Änderungen vornehmen?");
             Long buchungId = Long.parseLong(scan.nextLine());
             String s = "-";
             Optional<Booking> bookingOptional = repo.getById(buchungId);
@@ -169,7 +182,7 @@ public class CLIbooking {
 
         System.out.println("------------------- BUCHUNGSMANAGEMENT ---------------------");
         System.out.println("\t(1) Kurs buchen\n\t(2) Alle Buchungen anzeigen\n\t(3) Buchungsdetails anzeigen\n\t" +
-                "(4) Buchungsstatus ändern\n\t(5) Student löschen\n\t(6) Studentensuche\n\t(x) Beenden");
+                "(4) Buchungsstatus ändern\n\t(5) Buchung löschen\n\t(6) Studentensuche\n\t(x) Beenden");
     }
 
     private void showSearchMenue() {

@@ -58,10 +58,11 @@ public class CLIstudent {
     }
 
     private void studentSearchByFirstName() {
-        System.out.println("Geben Sie den gewünschten Vornamen an: ");
-        String searchString = scan.nextLine();
-        List<Student> studentList;
+
         try {
+            System.out.println("Geben Sie den gewünschten Vornamen an: ");
+            String searchString = scan.nextLine();
+            List<Student> studentList;
             studentList = repo.findAllStudentsByFirstName(searchString);
             for(Student s : studentList) {
                 System.out.println(s);
@@ -74,10 +75,11 @@ public class CLIstudent {
     }
 
     private void studentSearchByLastName() {
-        System.out.println("Geben Sie den gewünschten Nachnamen an: ");
-        String searchString = scan.nextLine();
-        List<Student> studentList;
+
         try {
+            System.out.println("Geben Sie den gewünschten Nachnamen an: ");
+            String searchString = scan.nextLine();
+            List<Student> studentList;
             studentList = repo.findAllStudentsByLastName(searchString);
             for(Student s : studentList) {
                 System.out.println(s);
@@ -90,10 +92,11 @@ public class CLIstudent {
     }
 
     private void studentSearch() {
-        System.out.println("Geben Sie einen Namen an: ");
-        String searchString = scan.nextLine();
-        List<Student> studentList;
+
         try {
+            System.out.println("Geben Sie einen Namen an: ");
+            String searchString = scan.nextLine();
+            List<Student> studentList;
             studentList = repo.findAllStudentsByName(searchString);
             for(Student s : studentList) {
                 System.out.println(s);
@@ -106,10 +109,11 @@ public class CLIstudent {
     }
 
     private void studentSearchByBirthYear() {
-        System.out.println("Geben Sie eine Jahreszahl ein: ");
-        String searchString = scan.nextLine();
-        List<Student> studentList;
+
         try {
+            System.out.println("Geben Sie eine Jahreszahl ein: ");
+            String searchString = scan.nextLine();
+            List<Student> studentList;
             studentList = repo.findAllStudentsByBirthYear(searchString);
             for(Student s : studentList) {
                 System.out.println(s);
@@ -122,12 +126,13 @@ public class CLIstudent {
     }
 
     private void studentSearchBetweenTwoDates() {
-        System.out.println("Geben Sie das gewünschte Startdatum an: ");
-        String searchString = scan.nextLine();
-        System.out.println("Geben Sie das gewünschte Enddatum an: ");
-        String searchString1 = scan.nextLine();
-        List<Student> studentList;
+
         try {
+            System.out.println("Geben Sie das gewünschte Startdatum an (YYYY-MM-DD): ");
+            String searchString = scan.nextLine();
+            System.out.println("Geben Sie das gewünschte Enddatum an (YYYY-MM-DD): ");
+            String searchString1 = scan.nextLine();
+            List<Student> studentList;
             studentList = repo.findAllStudentsBetweenTwoDates(searchString, searchString1);
             for(Student s : studentList) {
                 System.out.println(s);
@@ -144,9 +149,9 @@ public class CLIstudent {
     private void deleteStudent() {
 
         System.out.println("Welchen Studenten möchten Sie löschen? Bitte ID eingeben:");
-        Long studentIdToDelete = Long.parseLong(scan.nextLine());
 
         try {
+            Long studentIdToDelete = Long.parseLong(scan.nextLine());
             repo.deleteById(studentIdToDelete);
         } catch (DatabaseException databaseException) {
             System.out.println("Datenbankfehler beim Löschen: " + databaseException.getMessage());
@@ -158,9 +163,9 @@ public class CLIstudent {
 
     private void updateStudentDetails() {
         System.out.println("Für welche Studenten-ID möchten Sie die Studentendetails ändern?");
-        Long studentId = Long.parseLong(scan.nextLine());
 
         try {
+            Long studentId = Long.parseLong(scan.nextLine());
             Optional<Student> studentOptional = repo.getById(studentId);
             if(studentOptional.isEmpty()) {
                 System.out.println("Student mit der angegebenen ID nicht in der Datenbank!");
@@ -250,8 +255,8 @@ public class CLIstudent {
 
     private void showStudentsDetails() {
         System.out.println("Für welchen Studenten möchten Sie die Kursdetails anzeigen?");
-        Long studentId = Long.parseLong(scan.nextLine());
         try {
+            Long studentId = Long.parseLong(scan.nextLine());
             Optional<Student> studentOptional = repo.getById(studentId);
             if(studentOptional.isPresent()) {
                 System.out.println(studentOptional.get());
