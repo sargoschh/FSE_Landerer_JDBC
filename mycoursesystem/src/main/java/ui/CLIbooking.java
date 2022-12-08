@@ -71,10 +71,12 @@ public class CLIbooking {
             if(repo.getStudentRepo().countStudentsInDbWithId(id_student)==0)
                 throw new EntitysNotFoundException("Student mit der ID " + id_student + " nicht verfügbar!");
 
+            Date currentDate = new Date(System.currentTimeMillis());
+
             Optional<Booking> bookingOptional = repo.insert(
                     new Booking(repo.getCourseRepo().getById(id_course).get(),
                             repo.getStudentRepo().getById(id_student).get(),
-                            Date.valueOf(String.valueOf(new java.util.Date(System.currentTimeMillis()))),
+                            currentDate,
                             false)
             );
 
