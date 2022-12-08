@@ -2,7 +2,6 @@ package ui;
 
 import dataaccess.DatabaseException;
 import dataaccess.EntitysNotFoundException;
-import dataaccess.MyBookingRepository;
 import dataaccess.MySqlBookingRepository;
 import domain.Booking;
 import domain.InvalidValueException;
@@ -34,9 +33,117 @@ public class CLIbooking {
                 case "3" -> showBookingDetails();
                 case "4" -> updateBookingDetails();
                 case "5" -> deleteBooking();
+                case "6" -> search();
                 case "x" -> System.out.println("");
                 default -> inputError();
             }
+        }
+    }
+
+    private void search() {
+        String input = "-";
+        while(!input.equalsIgnoreCase("x")) {
+
+            showSearchMenue();
+            input = this.scan.nextLine();
+            switch (input) {
+                case "1" -> bookingSearchByStudentId();
+                case "2" -> bookingSearchByCourseId();
+                case "3" -> bookingSearchByBookingDate();
+                case "4" -> bookingDateBySpecialDate();
+                case "5" -> bookingSearchByApproval();
+                case "x" -> System.out.println("");
+                default -> inputError();
+            }
+        }
+
+    }
+
+    private void bookingSearchByStudentId() {
+        try {
+            System.out.println("Geben Sie die gewünschte Studenten-ID an: ");
+            Long studentId = Long.parseLong(scan.nextLine());
+            List<Booking> bookingList;
+            bookingList = repo.findAllBookingsByStudentId(studentId);
+            for(Booking b : bookingList) {
+                System.out.println(b);
+            }
+        }catch (DatabaseException databaseException) {
+            System.out.println("Datenbankfehler bei der Buchungssuche mit Studenten-ID: " + databaseException.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unbekannter Fehler bei der Buchungssuche mit Studenten-ID: " + e.getMessage());
+        }
+    }
+
+    private void bookingSearchByCourseId() {
+        try {
+            System.out.println("Geben Sie die gewünschte Kurs-ID an: ");
+            Long courseId = Long.parseLong(scan.nextLine());
+            List<Booking> bookingList;
+            bookingList = repo.findAllBookingsByCourseId(courseId);
+            for(Booking b : bookingList) {
+                System.out.println(b);
+            }
+        }catch (DatabaseException databaseException) {
+            System.out.println("Datenbankfehler bei der Buchungssuche mit Kurs-ID: " + databaseException.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unbekannter Fehler bei der Buchungssuche mit Kurs-ID: " + e.getMessage());
+        }
+    }
+
+    private void bookingSearchByBookingDate() {
+        try {
+            System.out.println("Geben Sie das gewünschte Buchungsdatum an (YYYY-MM-DD): ");
+            String bookingDate = scan.nextLine();
+            List<Booking> bookingList;
+            bookingList = repo.findAllBookingsByBookingDate(Date.valueOf(bookingDate));
+            for(Booking b : bookingList) {
+                System.out.println(b);
+            }
+        }catch (DatabaseException databaseException) {
+            System.out.println("Datenbankfehler bei der Buchungssuche nach dem Buchungsdatum: " + databaseException.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unbekannter Fehler bei der Buchungssuche nach dem Buchungsdatum: " + e.getMessage());
+        }
+    }
+
+    private void bookingDateBySpecialDate() {
+        try {
+            System.out.println("Geben Sie das gewünschte Datum an (YYYY-MM-DD): ");
+            String date = scan.nextLine();
+            List<Booking> bookingList;
+            bookingList = repo.findAllBookingsBeforeDate(Date.valueOf(date));
+            for(Booking b : bookingList) {
+                System.out.println(b);
+            }
+        }catch (DatabaseException databaseException) {
+            System.out.println("Datenbankfehler bei der Buchungssuche bevor einem bestimmten Datum: " + databaseException.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unbekannter Fehler bei der Buchungssuche bevor einem bestimmten Datum: " + e.getMessage());
+        }
+    }
+
+    private void bookingSearchByApproval() {
+        try {
+            System.out.println("Möchten Sie die bestätigten oder die nicht-bestätigten Buchungen ausgeben? " +
+                    "\nGeben Sie 1 für die bestätigten und 0 für die nicht-bestätigten Buchungen ein: ");
+            int i = Integer.parseInt(scan.nextLine());
+            List<Booking> bookingList;
+            if(i==1) {
+                bookingList = repo.findAllBookingsByApproval(true);
+            } else if (i==0) {
+                bookingList = repo.findAllBookingsByApproval(false);
+            } else {
+                throw new IllegalArgumentException("Eingabefehler!");
+            }
+
+            for(Booking b : bookingList) {
+                System.out.println(b);
+            }
+        }catch (DatabaseException databaseException) {
+            System.out.println("Datenbankfehler bei der Buchungssuche nach Bestätigungsstatus: " + databaseException.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unbekannter Fehler bei der Buchungssuche nach Bestätigungsstatus: " + e.getMessage());
         }
     }
 
@@ -182,13 +289,14 @@ public class CLIbooking {
 
         System.out.println("------------------- BUCHUNGSMANAGEMENT ---------------------");
         System.out.println("\t(1) Kurs buchen\n\t(2) Alle Buchungen anzeigen\n\t(3) Buchungsdetails anzeigen\n\t" +
-                "(4) Buchungsstatus ändern\n\t(5) Buchung löschen\n\t(6) Studentensuche\n\t(x) Beenden");
+                "(4) Buchungsstatus ändern\n\t(5) Buchung löschen\n\t(6) Buchungssuche\n\t(x) Beenden");
     }
 
     private void showSearchMenue() {
-        System.out.println("\t(1) Suche mit Vorname\n\t(2) Suche mit Nachname\n\t" +
-                "(3) Suche mit Name\n\t(4) Suche mit Jahreszahl\n\t" +
-                "(5) Suche mit Geburtsdatum zwischen zwei Daten\n\t(x) Zurück zum Management");
+        System.out.println("\t(1) Suche mit Studenten-ID\n\t(2) Suche mit Kurs-ID\n\t" +
+                "(3) Suche mit Buchungsdatum\n\t(4) Suche Buchungen vor bestimmtem Datum\n\t" +
+                "(5) Suche mit Bestätigungsstatus\n\t(x) Zurück zum Management");
+
     }
 
     private void inputError() {

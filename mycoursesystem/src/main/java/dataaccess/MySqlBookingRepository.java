@@ -214,26 +214,66 @@ public class MySqlBookingRepository implements MyBookingRepository {
 
     @Override
     public List<Booking> findAllBookingsByStudentId(Long studentID) {
-        return null;
+        try {
+            String sql = "SELECT * FROM `studentbookscourse` WHERE `id_student`=?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setLong(1, studentID);
+
+            return getBookingList(preparedStatement);
+        } catch (SQLException sqlException) {
+            throw new DatabaseException(sqlException.getMessage());
+        }
     }
 
     @Override
     public List<Booking> findAllBookingsByCourseId(Long courseID) {
-        return null;
+        try {
+            String sql = "SELECT * FROM `studentbookscourse` WHERE `id_course`=?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setLong(1, courseID);
+
+            return getBookingList(preparedStatement);
+        } catch (SQLException sqlException) {
+            throw new DatabaseException(sqlException.getMessage());
+        }
     }
 
     @Override
     public List<Booking> findAllBookingsByBookingDate(Date bookingDate) {
-        return null;
+        try {
+            String sql = "SELECT * FROM `studentbookscourse` WHERE `bookingdate` LIKE ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setDate(1, bookingDate);
+
+            return getBookingList(preparedStatement);
+        } catch (SQLException sqlException) {
+            throw new DatabaseException(sqlException.getMessage());
+        }
     }
 
     @Override
     public List<Booking> findAllBookingsBeforeDate(Date date) {
-        return null;
+        try {
+            String sql = "SELECT * FROM `studentbookscourse` WHERE `bookingdate` < ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setDate(1, date);
+
+            return getBookingList(preparedStatement);
+        } catch (SQLException sqlException) {
+            throw new DatabaseException(sqlException.getMessage());
+        }
     }
 
     @Override
     public List<Booking> findAllBookingsByApproval(Boolean approved) {
-        return null;
+        try {
+            String sql = "SELECT * FROM `studentbookscourse` WHERE `approved` LIKE ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setBoolean(1, approved);
+
+            return getBookingList(preparedStatement);
+        } catch (SQLException sqlException) {
+            throw new DatabaseException(sqlException.getMessage());
+        }
     }
 }

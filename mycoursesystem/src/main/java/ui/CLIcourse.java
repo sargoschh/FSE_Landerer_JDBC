@@ -61,9 +61,9 @@ public class CLIcourse {
 
     private void courseSearchByName() {
         System.out.println("Geben Sie den gewünschten Namen an: ");
-        String searchString = scan.nextLine();
-        List<Course> courseList;
         try {
+            String searchString = scan.nextLine();
+            List<Course> courseList;
             courseList = repo.findAllCoursesByName(searchString);
             for(Course c : courseList) {
                 System.out.println(c);
@@ -77,9 +77,9 @@ public class CLIcourse {
 
     private void courseSearchByDescription() {
         System.out.println("Geben Sie einen Suchbegriff aus der Beschreibung an: ");
-        String searchString = scan.nextLine();
-        List<Course> courseList;
         try {
+            String searchString = scan.nextLine();
+            List<Course> courseList;
             courseList = repo.findAllCoursesByDescription(searchString);
             for(Course c : courseList) {
                 System.out.println(c);
@@ -93,10 +93,10 @@ public class CLIcourse {
 
     private void courseSearchByCoursetype() {
         System.out.println("Geben Sie einen Kurstyp an: ");
-        String searchString = scan.nextLine();
-
-        List<Course> courseList;
         try {
+            String searchString = scan.nextLine();
+
+            List<Course> courseList;
             courseList = repo.findAllCoursesByCourseType(CourseType.valueOf(searchString.toUpperCase()));
             for(Course c : courseList) {
                 System.out.println(c);
@@ -110,9 +110,9 @@ public class CLIcourse {
 
     private void courseSearchByStartdate() {
         System.out.println("Geben Sie das gewünschte Startdatum an: ");
-        String searchString = scan.nextLine();
-        List<Course> courseList;
         try {
+            String searchString = scan.nextLine();
+            List<Course> courseList;
             courseList = repo.findAllCoursesByStartDate(Date.valueOf(searchString));
             for(Course c : courseList) {
                 System.out.println(c);
@@ -141,9 +141,9 @@ public class CLIcourse {
 
     private void courseSearch() {
         System.out.println("Geben Sie einen Suchbegriff an: ");
-        String searchString = scan.nextLine();
-        List<Course> courseList;
         try {
+            String searchString = scan.nextLine();
+            List<Course> courseList;
             courseList = repo.findAllCoursesByNameOrDescription(searchString);
             for(Course c : courseList) {
                 System.out.println(c);
@@ -158,9 +158,9 @@ public class CLIcourse {
     private void deleteCourse() {
 
         System.out.println("Welchen Kurs möchten Sie löschen? Bitte ID eingeben:");
-        Long courseIdToDelete = Long.parseLong(scan.nextLine());
 
         try {
+            Long courseIdToDelete = Long.parseLong(scan.nextLine());
             repo.deleteById(courseIdToDelete);
         } catch (DatabaseException databaseException) {
             System.out.println("Datenbankfehler beim Löschen: " + databaseException.getMessage());
@@ -172,9 +172,9 @@ public class CLIcourse {
 
     private void updateCourseDetails() {
         System.out.println("Für welche Kurs-ID möchten Sie die Kursdetails ändern?");
-        Long courseId = Long.parseLong(scan.nextLine());
 
         try {
+            Long courseId = Long.parseLong(scan.nextLine());
             Optional<Course> courseOptional = repo.getById(courseId);
             if(courseOptional.isEmpty()) {
                 System.out.println("Kurs mit der angegebenen ID nicht in der Datenbank!");
@@ -287,8 +287,8 @@ public class CLIcourse {
 
     private void showCourseDetails() {
         System.out.println("Für welchen Kurs möchten Sie die Kursdetails anzeigen?");
-        Long courseId = Long.parseLong(scan.nextLine());
         try {
+            Long courseId = Long.parseLong(scan.nextLine());
             Optional<Course> courseOptional = repo.getById(courseId);
             if(courseOptional.isPresent()) {
                 System.out.println(courseOptional.get());
