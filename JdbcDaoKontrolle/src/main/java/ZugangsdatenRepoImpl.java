@@ -59,17 +59,10 @@ public class ZugangsdatenRepoImpl implements ZugangsdatenRepository {
 
             resultSet.next();
 
-            Zugangsdaten zugangsdaten = new Zugangsdaten(
-                    resultSet.getLong(1),
-                    resultSet.getString(2),
-                    resultSet.getString(3),
-                    resultSet.getString(4)
-            );
+            Zugangsdaten zugangsdaten = newZugangsdaten(resultSet);
 
             return Optional.of(zugangsdaten);
-        } catch (SQLException e) {
-            throw new DatenbankException(e.getMessage());
-        } catch (InvalidValueException e) {
+        } catch (SQLException | InvalidValueException e) {
             throw new DatenbankException(e.getMessage());
         }
     }
@@ -97,19 +90,8 @@ public class ZugangsdatenRepoImpl implements ZugangsdatenRepository {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            ArrayList<Zugangsdaten> zugangsdatenList = new ArrayList<>();
-
-            while (resultSet.next()) {
-                zugangsdatenList.add(new Zugangsdaten(
-                        resultSet.getLong(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getString(4)
-                ));
-            }
-
-            return zugangsdatenList;
-        } catch (SQLException | InvalidValueException e) {
+            return getZugangsdatenList(resultSet);
+        } catch (SQLException e) {
             throw new DatenbankException(e.getMessage());
         }
     }
@@ -125,19 +107,31 @@ public class ZugangsdatenRepoImpl implements ZugangsdatenRepository {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
+            return getZugangsdatenList(resultSet);
+        } catch (SQLException e) {
+            throw new DatenbankException(e.getMessage());
+        }
+    }
+
+    private List<Zugangsdaten> getZugangsdatenList(ResultSet resultSet) {
+        try {
             ArrayList<Zugangsdaten> zugangsdatenList = new ArrayList<>();
 
             while (resultSet.next()) {
-                zugangsdatenList.add(new Zugangsdaten(
-                        resultSet.getLong(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getString(4)
-                ));
+                zugangsdatenList.add(newZugangsdaten(resultSet));
             }
             return zugangsdatenList;
         } catch (SQLException | InvalidValueException e) {
             throw new DatenbankException(e.getMessage());
         }
+    }
+
+    private Zugangsdaten newZugangsdaten(ResultSet resultSet) throws SQLException, InvalidValueException {
+        return new Zugangsdaten(
+                resultSet.getLong(1),
+                resultSet.getString(2),
+                resultSet.getString(3),
+                resultSet.getString(4)
+        );
     }
 }
