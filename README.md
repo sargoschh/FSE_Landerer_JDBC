@@ -145,7 +145,7 @@ Hier wird im äußeren try-catch-Block eine SQLException geworfen, wenn die Verb
 
 ## DAO-Pattern zum objektrelationalen Zugriff auf Datenbanken verstehen und anwenden
 
-
+Das Data Access Object ist ein Entwurfsmuster, das den Zugriff auf unterschiedliche Arten von Datenquellen (z. B. Datenbanken, Dateisystem) so kapselt, dass die angesprochene Datenquelle ausgetauscht werden kann, ohne dass der aufrufende Code geändert werden muss. Dadurch soll die eigentliche Programmlogik von technischen Details der Datenspeicherung befreit werden und flexibler einsetzbar sein. (https://de.wikipedia.org/wiki/Data_Access_Object)
 
 ![DAO-Pattern](Bilder/DAO-Pattern.jpg)
 
@@ -163,7 +163,7 @@ Ein Kurs/Student wird also erstellt, wenn ein neuer Datensatz in der Datenbank e
 
 ## Singleton-Pattern zum Aufbau der DB-Verbindung verstehen und anwenden
 
-Um im Programm nicht jedes mal eine neue Verbindung zu Datenbank herstellen zu müssen und in 
+In diesem Beispiel wird das Singelton-Pattern dazu verwendet, überall einfach auf die Datenbankverbindung zugreifen zu können. Es muss dann lediglich an der gewünschten Codestelle MysqlDatabaseConnection.getConnection(url, user, pwd) aufgerufen werden und schon erhält man eine aufrechte Datenbankverbindung, sofern keine Exception auftritt.
 
 ````java
 public class MysqlDatabaseConnection {
@@ -189,17 +189,123 @@ public class MysqlDatabaseConnection {
 
 ## Commandline-Interface (Kommandozeilenmenü) sauber programmieren
 
+Um in diesem Beispiel keinen unübersichtlichen Code zu erstellen, indem alle Methoden, die die CLI zum funktionieren benötigt, in eine Klasse gespeichert werden, habe ich mich dazu entschlossen, verschiedene CLI´s zu implementieren und diese in der Klasse CLI zusammenzuführen. So ist beispielsweise in der Klasse CLIstudent das komplette Kommandozeilenmenü zur Bearbeitung der Studententabelle implementiert. In der CLI wird dann bei Auswahl das jeweilige Kommandozeilenmenü gestartet.
+
+````java
+public class CLI {
+
+    Scanner scan;
+    CLIcourse course;
+    CLIstudent student;
+    CLIbooking booking;
+    public CLI(CLIcourse course, CLIstudent student, CLIbooking booking) {
+        this.scan = new Scanner(System.in);
+        this.course = course;
+        this.student = student;
+        this.booking = booking;
+    }
+
+    public void start() {
+        String input = "-";
+        while(!input.equalsIgnoreCase("x")) {
+
+            showMenue();
+            input = this.scan.nextLine();
+            switch (input) {
+                case "1" -> startCourse();
+                case "2" -> startStudent();
+                case "3" -> startBooking();
+                case "x" -> System.out.println("Auf Wiedersehen!");
+                default -> inputError();
+            }
+        }
+        this.scan.close();
+    }
+
+    private void startBooking() {this.booking.start();}
+
+    private void startCourse() {this.course.start();}
+
+    private void startStudent() {this.student.start();}
+
+    private void showMenue() {
+        System.out.println("------------------------ MANAGEMENT ------------------------");
+        System.out.println("\t(1) Kurstabelle bearbeiten\n\t(2) Studententabelle bearbeiten" +
+                "\n\t(3) Buchungen bearbeiten\n\t(x) Beenden");
+    }
+
+    private void inputError() {
+        System.out.println("Bitte nur die Zahlen der Menueauswahl eingeben!");
+    }
+}
+````
 
 ## Exceptions verstehen und verwenden
 
+Im Falle der Methode deleteCourse() können mehrere Fehler auftreten. Da in dieser Methode mit einer Datenbank gearbeitet wird, wird im Falle eines Fehlers zunächst geprüft, ob es sich um einen Datenbankfehler handelt. Ist dies der Fall, wird eine DatabaseException geworfen. Sollte ein anderer Fehler entstehen, wird eine "normale" Exception geworfen - da wir nicht genau wissen, was für Fehler entstehen können, verwenden wir Exception, um auf alle möglichen Fehler reagieren zu können.
 
-## Abstrakte Klassen verstehen und verwenden
+````java
+private void deleteCourse() {
 
+        System.out.println("Welchen Kurs möchten Sie löschen? Bitte ID eingeben:");
 
-## Interfaces (auch mit Erben für Interfaces) verstehen und verwenden
+        try {
+            Long courseIdToDelete = Long.parseLong(scan.nextLine());
+            repo.deleteById(courseIdToDelete);
+        } catch (DatabaseException databaseException) {
+            System.out.println("Datenbankfehler beim Löschen: " + databaseException.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unbekannter Fehler beim Löschen: " + e.getMessage());
+        }
 
+    }
+````
+
+## Abstrakte Klassen & Interfaces (auch mit Erben für Interfaces) verstehen und verwenden
+
+Ein Interface ist eine Schnittstelle, über die einer Klasse bestimmte Funktionen zur Verfügung gestellt werden. Um die Funktionen nutzen zu können, müssen sie aber erst von der Klasse implementiert werden. Das Interface gibt nur den Rahmen (die Methodendeklarationen) vor.
+Interfaces können als eine besondere Form einer Klasse angesehen werden. Sie enthalten ausschließlich Konstanten und abstrakte Methoden. Die abstrakten Methoden müssen von der Klasse implementiert werden, der das Interface zugewiesen wird. (https://www.programmierenlernenhq.de/interfaces-in-java/)
+
+````java
+public interface MyCourseRepository extends BaseRepository<Course, Long> {
+
+    List<Course> findAllCoursesByName(String name);
+    List<Course> findAllCoursesByDescription(String description);
+    List<Course> findAllCoursesByNameOrDescription(String searchText);
+    List<Course> findAllCoursesByCourseType(CourseType courseType);
+    List<Course> findAllCoursesByStartDate(Date startDate);
+    List<Course> findAllRunningCourses();
+
+}
+````
+
+In diesem Fall bedeutet das, dass unser BaseRepository die Methoden für die CRUD-Implementierung vorgibt, MyCourseRepository erbt von BaseRepository, muss die Methoden von diesem aber nicht ausimplementieren, da MyCourseRepository wieder ein Interface ist. Implementiert nun eine Klasse das Interface MyCourseRepository, so muss diese nicht nur die Methoden von MyCourseRepository ausimplementieren, sondern auch die Methoden von BaseRepository.
+
+![MethodenImplementieren](Bilder/MethodenImplementieren.jpg)
 
 ## Domänenklassen korrekt aufbauen (Objekte immer im konsistenten Zustand halten, Exceptions verwenden, Setter absichern)
 
+````java
+    public Course(Long id, String name, String description, int hours, Date beginDate, Date endDate, CourseType courseType) throws InvalidValueException {
+        super(id);
+        this.setName(name);
+        this.setDescription(description);
+        this.setHours(hours);
+        this.setBeginDate(beginDate);
+        this.setEndDate(endDate);
+        this.setCourseType(courseType);
+    }
 
-## CRUD-Operationen mit DAO-Pattern und JDBC umsetzen
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) throws InvalidValueException {
+        if(name!=null && name.length()>1) {
+            this.name = name;
+        } else {
+            throw new InvalidValueException("Kursname muss mindestens 2 Zeichen lang sein!");
+        }
+    }
+````
+Möchte man einen neuen Kurs erstellen, dann werden die Datenfelder über die Setter gesetzt. In den Settern wird zunächst überprüft, ob der mitgegebene Wert den Vorgaben entspricht - sollte dies nicht der Fall sein, wird eine InvalidValueException ausgelöst. Ansonsten wird das Datenfeld gesetzt. Es wird so sichergestellt, dass kein Kursobjekt erstellt wird, das nicht den Vorgaben entspricht.
